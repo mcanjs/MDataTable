@@ -2,7 +2,7 @@ export default {
     dist: './dist',
     src: './src/',
     sourceJs: `./src/js/**/**/*.js`,
-    rootJs: `./src/js/DataTable.js`,
+    rootJs: `./src/js/MDataTable.js`,
     rootSass: `./src/sass/style.scss`,
     sass: `./src/sass/**/**/*.scss`,
     css: `./dist/assets/css/`,

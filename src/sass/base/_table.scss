@@ -1,0 +1,130 @@
+//
+// Basic Bootstrap table
+//
+
+.table {
+  width: 100%;
+  margin-bottom: 1rem;
+  color: #212529;
+  background-color: null; // Reset for nesting within parents with `background-color`.
+
+  th,
+  td {
+    padding: .75rem;
+    vertical-align: top;
+    border-top: 1px solid #dee2e6;
+  }
+
+  thead th {
+    vertical-align: bottom;
+    border-bottom: (2 * 1px) solid #dee2e6;
+  }
+
+  tbody + tbody {
+    border-top: (2 * 1px) solid #dee2e6;
+  }
+}
+
+
+//
+// Condensed table w/ half padding
+//
+
+.table-sm {
+  th,
+  td {
+    padding: .3rem;
+  }
+}
+
+
+// Border versions
+//
+// Add or remove borders all around the table and between all the columns.
+
+.table-bordered {
+  border: 1px solid #dee2e6;
+
+  th,
+  td {
+    border: 1px solid #dee2e6;
+  }
+
+  thead {
+    th,
+    td {
+      border-bottom-width: 2 * 1px;
+    }
+  }
+}
+
+.table-borderless {
+  th,
+  td,
+  thead th,
+  tbody + tbody {
+    border: 0;
+  }
+}
+
+// Zebra-striping
+//
+// Default zebra-stripe styles (alternating gray and transparent backgrounds)
+
+.table-striped {
+  tbody tr:nth-of-type(odd) {
+    background-color: rgba(#000000, .05);
+  }
+}
+
+
+// Dark styles
+//
+// Same table markup, but inverted color scheme: dark background and light text.
+
+// stylelint-disable-next-line no-duplicate-selectors
+.table {
+  .thead-dark {
+    th {
+      color: white;
+      background-color: #343a40;
+      border-color: lighten(#343a40, 7.5%);
+    }
+  }
+
+  .thead-light {
+    th {
+      color: #495057;
+      background-color: #e9ecef;
+      border-color: #dee2e6;
+    }
+  }
+}
+
+.table-dark {
+  color: white;
+  background-color: #343a40;
+
+  th,
+  td,
+  thead th {
+    border-color: lighten(#343a40, 7.5%);
+  }
+
+  &.table-bordered {
+    border: 0;
+  }
+
+  &.table-striped {
+    tbody tr:nth-of-type(odd) {
+      background-color: rgba(#ffffff, .05);
+    }
+  }
+
+}
+
+
+// Responsive tables
+//
+// Generate series of `.table-responsive-*` classes for configuring the screen
+// size of where your table will overflow.
