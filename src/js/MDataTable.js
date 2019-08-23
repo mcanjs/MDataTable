@@ -9,6 +9,11 @@ export default class MDataTable {
         this.editable = this.obj.editable;
         this.local = this.obj.local;
         
+        // States
+        this.states = {
+            lastColumnValue: null,
+        }
+        
         // initialize Event Listener
         this.deleteEvent();
         
@@ -18,14 +23,28 @@ export default class MDataTable {
     }
     
     deleteEvent () {
-        this.deleteAct = this.table.querySelectorAll('tbody tr td .delete');
-        // All remove buttons loop
-        for ( let i = 0; i < this.deleteAct.length; i += 1 ) {
-            // Remove button
-            const item = this.deleteAct[i];
-            // Remove button init event
-            item.addEventListener('click', this.deleteEventManipulation.bind(this, item))
+        if ( this.obj.multi ) {
+            for ( let i = 0; i < this.table.length; i += 1 ) {
+                this.deleteAct = this.table[i].querySelectorAll('tbody tr td .delete');
+                // All remove buttons loop
+                for (let j = 0; j < this.deleteAct.length; j += 1) {
+                    // Remove button
+                    const item = this.deleteAct[j];
+                    // Remove button init event
+                    item.addEventListener('click', this.deleteEventManipulation.bind(this, item))
+                }
+            }
+        } else {
+            this.deleteAct = this.table.querySelectorAll('tbody tr td .delete');
+            // All remove buttons loop
+            for (let i = 0; i < this.deleteAct.length; i += 1) {
+                // Remove button
+                const item = this.deleteAct[i];
+                // Remove button init event
+                item.addEventListener('click', this.deleteEventManipulation.bind(this, item))
+            }
         }
+        
     }
     
     deleteEventManipulation (item) {
@@ -76,6 +95,8 @@ export default class MDataTable {
         this.rowWidth = width;
         this.rowHeight = height;
         this.local = local;
+
+        if ( document.body.getElementsByClassName('m-table-warn').length !== 0 ) return;
         
         // Creating warn dom
         const warnDom = document.createElement('div');
@@ -123,9 +144,14 @@ export default class MDataTable {
     editEvent () {
         
         if (this.obj.multi) {
-            for (let i = 0; i < document.querySelectorAll(this.obj.el).length; i += 1 ) {
-                const item = document.querySelectorAll(this.obj.el)[i];
-                item.addEventListener('dbclick', this.dbClickEventManipulation.bind(this, item, true) );
+            for (let i = 0; i < this.table.length; i += 1 ) {
+                const item = this.table[i];
+                for (let j = 0; j < item.querySelectorAll('tbody tr td').length; j += 1 ) {
+                    const column = item.querySelectorAll('tbody tr td')[j];
+                    if (column.getAttribute('data-table-editable') !== "false") {
+                        column.addEventListener('dblclick', this.dbClickEventManipulation.bind(this, column, false));
+                    }
+                }
             }
         } else {
             this.columns = document.querySelector(this.obj.el).getElementsByTagName('td');
@@ -143,9 +169,56 @@ export default class MDataTable {
     dbClickEventManipulation (column, type) {
         this.column = column;
         this.type = type;
+        // Save last column
+        this.states.lastColumnValue = this.column.innerText;
+        // Create and add input area
+        const createInput = document.createElement('input');
+        createInput.type = 'text';
+        createInput.classList.add('edit-column');
+        createInput.value = this.column.innerText;
+        this.column.innerText = '';
+        this.column.append(createInput);
 
-        console.log(this.column);
+        // Create and add change button
+        const createButton = document.createElement('button');
+        createButton.innerText = this.local.changeButtonValue ? this.local.changeButtonValue : 'Change';
+        this.column.append(createButton);
+
+        // Create and add cancel button
+        const cancelButton = document.createElement('button');
+        cancelButton.innerText = this.local.cancelButtonValue ? this.local.cancelButtonValue : 'Cancel';
+        this.column.append(cancelButton);
         
+        // Click Events
+        createButton.addEventListener('click', this.createButtonClickEventHandler.bind(this, this.column, createInput))
+        cancelButton.addEventListener('click', this.changeInputCancelEventHandler.bind(this, this.column));
+        // Keyboard Events
+        createInput.addEventListener('keyup', (e) => { this.changeInputKeyEventHandler(e, this.column, createInput) });
+    }
+    
+    createButtonClickEventHandler (column, input) {
+        this.column = column;
+        this.input = input;
+        this.column.innerHTML = this.input.value;
+    }
+
+    changeInputCancelEventHandler (column) {
+        this.column = column;
+
+        this.column.innerHTML = this.states.lastColumnValue;
+    }
+
+    changeInputKeyEventHandler (event, column, input) {
+        this.event = event;
+        this.column = column;
+        this.input = input;
+        
+        // Enter Keycode
+        if ( this.event.keyCode === 13 ) {
+            this.createButtonClickEventHandler(this.column, this.input);
+        } else if ( this.event.keyCode === 27 ) {
+            this.changeInputCancelEventHandler(this.column);
+        }
     }
 }
 
