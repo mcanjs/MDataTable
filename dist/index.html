@@ -63,11 +63,53 @@
             </tr>
         </tbody>
     </table>
+    <table class="table table-striped table-dark">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">First</th>
+                <th scope="col">Last</th>
+                <th scope="col">Handle</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th scope="row">1</th>
+                <td>Larry</td>
+                <td>the Bird</td>
+                <td data-table-editable="false">
+                    <div class="delete">
+                        <i class="material-icons">close</i>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <th scope="row">2</th>
+                <td>Larry</td>
+                <td>the Bird</td>
+                <td data-table-editable="false">
+                    <div class="delete">
+                        <i class="material-icons">close</i>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <th scope="row">3</th>
+                <td>Larry</td>
+                <td>the Bird</td>
+                <td data-table-editable="false">
+                    <div class="delete">
+                        <i class="material-icons">close</i>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
     
     <script src="./assets/js/script.js"></script>
     <script>
         var datatable = new MDataTable({
-            el: '#m-datatable',
+            el: '.table',
             local: {
                 deleteWarn: {
                     title: 'Delete this area ?',
@@ -79,7 +121,9 @@
                     cancelButtonValue: 'Cancel'
                 }
             },
-            editable: true
+            editable: true,
+            countIndex: true,
+            multi: 'true'
         });
     </script>
 </body>
