@@ -1,3 +1,11 @@
+/**
+* @type {el: string}
+* @type {local: string}
+* @type {multi: boolean}
+* @type {editable: boolean}
+* @type {countIndex: boolean}
+*/
+
 export default class MDataTable {
     constructor ( obj ) {
         /*
