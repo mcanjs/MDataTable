@@ -66,8 +66,28 @@
     
     <script src="./assets/js/script.js"></script>
     <script>
+        // Require for Dynamic table delete columns..
         var datatable = new MDataTable({
             el: '#m-datatable',
+            jsonData: {
+                dataTableParentClass: 'table table-striped table-dark',
+                tableEventsDelete: true,
+                tableEventsHeaderText: 'Handle',
+                thead: ['#', 'First', 'Last'],
+                columns: [
+                {
+                    0: '1',
+                    1: 'Larry',
+                    2: 'the Bird',
+                    3: MDataTable.createDeleteColumnAuth('<i class="material-icons">close</i>')
+                },
+                {
+                    0: '2',
+                    1: 'Larry',
+                    2: 'the Bird',
+                    3: MDataTable.createDeleteColumnAuth('<i class="material-icons">edit</i>')
+                }]
+            },
             local: {
                 deleteWarn: {
                     title: 'Delete this area ?',

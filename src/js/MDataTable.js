@@ -6,6 +6,9 @@
 * @type {countIndex: boolean}
 */
 
+// Modules
+import jsonToHTML from './modules/jsonToHTML';
+
 export default class MDataTable {
     constructor ( obj ) {
         /*
@@ -13,6 +16,16 @@ export default class MDataTable {
         * single = querySelector
         */
         this.obj = obj;
+        this.HTMLData = null;
+        if ( this.obj.jsonData ) {
+            new jsonToHTML(this.obj.jsonData, data => {
+                console.log(data)
+                if ( this.obj.multi ) {
+
+                }
+            });
+        }
+        
         this.table = this.obj.multi ? document.querySelectorAll(this.obj.el) : document.querySelector(this.obj.el);
         this.editable = this.obj.editable;
         this.local = this.obj.local;
@@ -28,6 +41,12 @@ export default class MDataTable {
         if ( this.editable ) {
             this.editEvent();
         }
+    }
+    
+    // Create Delete Event for Dynamic datas.
+    static createDeleteColumnAuth (innerEl) {
+        this.innerEl = innerEl;
+        return ['$F3v.v5-rmv##', this.innerEl];
     }
     
     deleteEvent () {
@@ -216,7 +235,6 @@ export default class MDataTable {
     
     changeInputCancelEventHandler (column) {
         this.column = column;
-        
         this.column.innerHTML = this.states.lastColumnValue;
     }
     
